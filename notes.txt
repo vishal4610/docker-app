@@ -1,0 +1,34 @@
+-------------------------------------
+Command for compiling the DockerFile:
+-------------------------------------
+
+$ docker build -t vishalreddy1/file-generator:latest .
+
+----------------------------------------------
+Command for running the image from Docker Hub:
+----------------------------------------------
+
+$ docker run -d -p <host_port>:<container_port> vishalreddy1/file-generator:latest
+
+
+--------------------------------------------------------------------------------------
+To access the application's artifact (file with lines), you can either use docker cp command to copy the file from the container to host, or you can use the -v option while running the container to mount a host directory to the container's /app directory where the artifact file is located.
+--------------------------------------------------------------------------------------
+
+$ docker cp <container_id>:/app/file_with_lines.txt /host/directory/
+
+OR
+
+$ docker run -d -p <host_port>:<container_port> -v /host/directory/:/app vishalreddy1/file-generator:latest
+
+
+The above commands assume that the "file_with_lines.txt" is already generated
+
+--------------------------------------------------------------------------------------
+To run the container with custom "--lines_number" for example 20 use the below command
+--------------------------------------------------------------------------------------
+
+$ docker run -d -p <host_port>:<container_port> -v /host/directory/:/app <image_name> --lines_number 20
+
+
+
