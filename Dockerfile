@@ -1,31 +1,32 @@
+# FROM docker.io/library/debian:11
 FROM debian:11
 
-# Update package list and upgrade installed packages
-RUN apt-get update && apt-get upgrade -y
+# Set environment variables
+ENV PYTHON_VERSION 3.9
+ENV DEBIAN_FRONTEND noninteractive
 
-# Install necessary packages
-RUN apt-get install -y python3.9 python3.9-dev python3.9-venv
-RUN apt-get install -y git nano
+# Install system packages
+RUN apt-get update && \
+    apt-get install -y \
+    git \
+    python3.9 \
+    python3-pip \
+    nano \
+    wget
 
-# Create a virtual environment and activate it
-RUN python3.9 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+# Set python alias
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
 
-# Clone the application from GitHub
-RUN git clone https://github.com/vishal4610/docker-app.git
+# Clone the GitHub repository
+RUN git clone https://github.com/vishal4610/docker-app.git /app
+WORKDIR /app
 
-# Install dependencies
-RUN pip install --upgrade pip
-RUN pip install -r /docker-app/requirements.txt
+# Install python dependencies
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
-# Add alias for python3.9
-RUN echo "alias python='python3.9'" >> ~/.bashrc
+# Make the artifact file available outside the container
+VOLUME /app/file_with_lines.txt
 
-# Copy the artifact to a directory outside the container
-RUN cp /docker-app/artifact.txt /artifact
-
-# Set the working directory
-WORKDIR /docker-app
-
-# Entry point to run the application
-CMD ["python", "file_generator.py", "--lines_number", "10"]
+# Run the application
+CMD ["python", "main.py", "--lines_number", "10"]

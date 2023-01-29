@@ -77,3 +77,6 @@ VOLUME /app
 
 # entrypoint
 CMD ["python", "file_generator.py", "--lines_number", "10"]
+
+
+strongpassword
