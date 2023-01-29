@@ -12,7 +12,10 @@ RUN apt-get update && \
     python3.9 \
     python3-pip \
     nano \
-    wget
+    wget \
+    vim \
+    curl \
+    net-tools
 
 # Set python alias
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
